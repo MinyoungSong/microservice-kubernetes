@@ -148,9 +148,9 @@ spec:
     targetPort: 8080
   selector:
     run: catalog
-  type: LoadBalancer
-status:
-  loadBalancer: {}
+  type: ClusterIP
+# status:
+#   loadBalancer: {}
 
 ---
 
@@ -168,9 +168,9 @@ spec:
     targetPort: 8080
   selector:
     run: customer
-  type: LoadBalancer
-status:
-  loadBalancer: {}
+  type: ClusterIP
+# status:
+#   loadBalancer: {}
 
 ---
 
@@ -188,6 +188,6 @@ spec:
     targetPort: 8080
   selector:
     run: order
-  type: LoadBalancer
-status:
-  loadBalancer: {}
+  type: ClusterIP
+# status:
+#   loadBalancer: {}
