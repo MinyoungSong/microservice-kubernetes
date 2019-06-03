@@ -1,0 +1,220 @@
+kubectl apply --context=$CTX_CLUSTER2 -f - <<EOF
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: apache
+    app: apache
+    version: v1
+  name: apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: apache
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: apache
+        app: apache
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/ewolff/microservice-kubernetes-demo-apache:latest
+        name: apache
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: catalog
+    app: catalog
+    version: v1
+  name: catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: catalog
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: catalog
+        app: catalog
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/ewolff/microservice-kubernetes-demo-catalog:latest
+        name: catalog
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: customer
+    app: customer
+    version: v1
+  name: customer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: customer
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: customer
+        app: customer
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/ewolff/microservice-kubernetes-demo-customer:latest
+        name: customer
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+
+---
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: order
+    app: order
+    version: v1
+  name: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: order
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: order
+        app: order
+        version: v1
+    spec:
+      containers:
+      - image: docker.io/ewolff/microservice-kubernetes-demo-order:latest
+        name: order
+        ports:
+        - containerPort: 8080
+        resources: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: apache
+    app: apache
+    service: apache
+  name: apache
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: apache
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: catalog
+    app: catalog
+    service: catalog
+  name: catalog
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: catalog
+  type: ClusterIP
+# status:
+#   loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: customer
+    app: customer
+    service: customer
+  name: customer
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: customer
+  type: ClusterIP
+# status:
+#   loadBalancer: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: order
+    app: order
+    service: order
+  name: order
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: order
+  type: ClusterIP
+# status:
+#   loadBalancer: {}
+---
+EOF
