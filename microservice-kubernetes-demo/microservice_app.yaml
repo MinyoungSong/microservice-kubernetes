@@ -1,4 +1,11 @@
 kubectl apply --context=$CTX_CLUSTER2 -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: msa-demo
+  labels:
+    istio-injection: enabled
+---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -8,6 +15,7 @@ metadata:
     app: apache
     version: v1
   name: apache
+  namespace: msa-demo
 spec:
   replicas: 1
   selector:
@@ -41,6 +49,7 @@ metadata:
     app: catalog
     version: v1
   name: catalog
+  namespace: msa-demo
 spec:
   replicas: 1
   selector:
@@ -74,6 +83,7 @@ metadata:
     app: customer
     version: v1
   name: customer
+  namespace: msa-demo
 spec:
   replicas: 1
   selector:
@@ -107,6 +117,7 @@ metadata:
     app: order
     version: v1
   name: order
+  namespace: msa-demo
 spec:
   replicas: 1
   selector:
@@ -140,10 +151,12 @@ metadata:
     app: apache
     service: apache
   name: apache
+  namespace: msa-demo
 spec:
   ports:
   - port: 80
-    protocol: TCP
+    name: http
+    # protocol: TCP
     targetPort: 80
   selector:
     app: apache
@@ -162,10 +175,12 @@ metadata:
     app: catalog
     service: catalog
   name: catalog
+  namespace: msa-demo
 spec:
   ports:
   - port: 8080
-    protocol: TCP
+    name: http
+    # protocol: TCP
     targetPort: 8080
   selector:
     app: catalog
@@ -184,10 +199,12 @@ metadata:
     app: customer
     service: customer
   name: customer
+  namespace: msa-demo
 spec:
   ports:
   - port: 8080
-    protocol: TCP
+    name: http
+    # protocol: TCP
     targetPort: 8080
   selector:
     app: customer
@@ -206,10 +223,12 @@ metadata:
     app: order
     service: order
   name: order
+  namespace: msa-demo
 spec:
   ports:
   - port: 8080
-    protocol: TCP
+    name: http
+    # protocol: TCP
     targetPort: 8080
   selector:
     app: order
